@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view, permission_classes
@@ -31,4 +32,4 @@ def register_user(request):
 
     token = Token.objects.create(user=new_user)
     data = {'token': token.key}
-    return Response(data)
+    return Response(data, status=status.HTTP_201_CREATED)
