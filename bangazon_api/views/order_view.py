@@ -65,6 +65,9 @@ class OrderView(ViewSet):
                 pk=request.data['paymentTypeId'], customer=request.auth.user)
             order.payment_type = payment_type
             order.completed_on = datetime.now()
+            serializer = UpdateOrderSerializer(order, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response({'message': "Order Completed"})
         except (Order.DoesNotExist, PaymentType.DoesNotExist) as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
